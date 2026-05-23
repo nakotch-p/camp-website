@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>数当てゲーム</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink: #ff4d8d;
+      --purple: #9b59ff;
+      --dark: #0a0a0f;
+      --dark2: #12121a;
+      --dark3: #1a1a26;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 75%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(2px 2px at 55% 40%, rgba(155,89,255,0.35) 0%, transparent 100%),
+        radial-gradient(2px 2px at 20% 65%, rgba(255,77,141,0.25) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* TICKER */
+    .ticker {
+      width: 100%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      z-index: 10;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 18s linear infinite;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      font-weight: 700;
+    }
+    @keyframes ticker {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
+    }
+
+    .logo {
+      margin-top: 48px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 8px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* GAME CARD */
+    .game-card {
+      position: relative;
+      z-index: 1;
+      margin: 40px 16px 60px;
+      width: min(480px, 100%);
+      background: var(--dark2);
+      border-radius: 28px;
+      border: 1px solid rgba(155,89,255,0.2);
+      padding: 48px 40px;
+      box-shadow:
+        0 0 60px rgba(155,89,255,0.1),
+        0 0 120px rgba(255,77,141,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .game-subtitle {
+      font-size: 0.65rem;
+      letter-spacing: 5px;
+      color: var(--pink);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .range-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    /* フィードバック */
+    #feedback {
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    #feedbackEmoji {
+      font-size: 2.4rem;
+    }
+
+    #guessResult {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .result-up   { color: #ff6b9d; }
+    .result-down { color: #7dd3fc; }
+    .result-win  {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* INPUT */
+    #guessGame {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    #guessField {
+      flex: 1;
+      background: var(--dark3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      padding: 14px 24px;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 4px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    #guessField:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 20px rgba(155,89,255,0.2);
+    }
+
+    #guessSubmit {
+      padding: 14px 24px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: opacity 0.3s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    #guessSubmit:hover {
+      opacity: 0.85;
+      transform: translateY(-2px);
+    }
+
+    /* 試行回数 */
+    .attempts-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: var(--dark3);
+      border-radius: 14px;
+    }
+
+    .attempts-label {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+
+    .attempts-count {
+      font-size: 1.4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* CONFETTI */
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker">
+    <span class="ticker-inner">
+      ★ NOVA NUMBER GAME &nbsp;&nbsp;&nbsp; ✦ 数字を当ててみて！ &nbsp;&nbsp;&nbsp; ★ CAN YOU GUESS THE NUMBER? &nbsp;&nbsp;&nbsp; ✦ 1〜20 の数字だよ！ &nbsp;&nbsp;&nbsp; ★ FIGHTING! &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <div class="logo">NOVA</div>
+
+  <div class="game-card">
+    <p class="game-subtitle">★ Nova Official Game ★</p>
+    <h1>数当てゲーム</h1>
+    <p class="range-label">1 〜 20 の数字を当てよう！</p>
+
+    <div id="feedback">
+      <div id="feedbackEmoji">🎤</div>
+      <p id="guessResult">さあ、挑戦してみて！</p>
+    </div>
+
+    <div id="guessGame">
+      <input type="number" min="1" max="20" id="guessField" placeholder="？">
+      <input type="submit" value="CHECK" id="guessSubmit">
+    </div>
+
+    <div class="attempts-row">
+      <span class="attempts-label">Attempts</span>
+      <span class="attempts-count" id="attemptsCount">0</span>
+    </div>
+  </div>
+
+  <script>
+    let answerNumber = Math.floor(Math.random() * 20) + 1;
+    console.log('正解は' + answerNumber); // バグ: answerNumber のタイポ
+
+    let attempts = 0;
+
+    const upEmojis   = ['📈', '🔺', '⬆️', '🚀'];
+    const downEmojis = ['📉', '🔻', '⬇️', '❄️'];
+    const winEmojis  = ['🎉', '💜', '⭐', '🌟'];
+    const upMsgs     = ['もっと大きい数字だよ！▲', 'UP！もっと上！ ▲', '違う、もっと高い！ ▲'];
+    const downMsgs   = ['もっと小さい数字だよ！▼', 'DOWN！もっと下！ ▼', '違う、もっと低い！ ▼'];
+    const winMsgs    = ['正解！！PERFECT！', 'AMAZING！やったね！', 'BRAVO！！すごい！'];
+
+    function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    let guessField    = document.querySelector('#guessField');
+    let guessSubmit   = document.querySelector('#guessSubmit');
+    let guessResult   = document.querySelector('#guessResult');
+    let feedbackEmoji = document.querySelector('#feedbackEmoji');
+    let attemptsCount = document.querySelector('#attemptsCount');
+
+    function checkGuess() {
+      let userGuess = Number(guessField.value);
+      if (!userGuess || userGuess < 1 || userGuess > 20) {
+        feedbackEmoji.textContent = '😅';
+        guessResult.textContent = '1〜20 の数字を入力してね！';
+        guessResult.className = '';
+        return;
+      }
+
+      attempts++;
+      attemptsCount.textContent = attempts;
+      guessField.value = '';
+      guessField.focus();
+
+      if (userGuess === answerNumber) {
+        feedbackEmoji.textContent = rand(winEmojis);
+        guessResult.textContent = rand(winMsgs);
+        guessResult.className = 'result-win';
+        guessSubmit.disabled = true;
+        launchConfetti();
+      } else if (userGuess < answerNumber) {
+        feedbackEmoji.textContent = rand(upEmojis);
+        guessResult.textContent = rand(upMsgs);
+        guessResult.className = 'result-up';
+      } else {
+        feedbackEmoji.textContent = rand(downEmojis);
+        guessResult.textContent = rand(downMsgs);
+        guessResult.className = 'result-down';
+      }
+    }
+
+    function launchConfetti() {
+      const colors = ['#ff4d8d', '#9b59ff', '#fff', '#ffb3d1', '#c084fc'];
+      for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+          const c = document.createElement('div');
+          c.className = 'confetti-piece';
+          c.style.left = Math.random() * 100 + 'vw';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+          c.style.width = (6 + Math.random() * 8) + 'px';
+          c.style.height = (6 + Math.random() * 8) + 'px';
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 4000);
+        }, i * 40);
+      }
+    }
+
+    guessSubmit.addEventListener('click', checkGuess);
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') checkGuess(); });
+  </script>
+
+</body>
+</html>
