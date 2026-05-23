@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>週刊少年ジャンプ — NOVA</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink: #ff4d8d;
+      --purple: #9b59ff;
+      --orange: #ff6b2b;
+      --dark: #0a0a0f;
+      --dark2: #12121a;
+      --dark3: #1a1a26;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(2px 2px at 60% 40%, rgba(255,107,43,0.2) 0%, transparent 100%),
+        radial-gradient(2px 2px at 25% 65%, rgba(255,77,141,0.15) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* TICKER */
+    .ticker {
+      width: 100%;
+      background: linear-gradient(135deg, var(--orange), var(--pink));
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      z-index: 10;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 22s linear infinite;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      font-weight: 700;
+    }
+    @keyframes ticker {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
+    }
+
+    /* NAV */
+    nav {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--orange); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 24px 48px;
+    }
+    .hero-tag {
+      font-size: 0.65rem;
+      letter-spacing: 5px;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 7vw, 4rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #fff 30%, rgba(255,107,43,0.8));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .hero-sub {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* FILTER */
+    .filter-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+      padding: 0 16px;
+    }
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: linear-gradient(135deg, var(--orange), var(--pink));
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* GRID */
+    .manga-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      width: min(1200px, 100%);
+      padding: 0 24px 60px;
+    }
+
+    /* CARD */
+    .manga-card {
+      background: var(--dark2);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      animation: cardIn 0.4s ease both;
+    }
+    .manga-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--orange);
+      box-shadow: 0 12px 40px rgba(255,107,43,0.15);
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .manga-cover {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+      background: var(--dark3);
+    }
+    .manga-cover-placeholder {
+      width: 100%;
+      aspect-ratio: 2/3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--dark3), rgba(255,107,43,0.1));
+      font-size: 3rem;
+      gap: 8px;
+    }
+    .manga-cover-placeholder span {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .manga-info {
+      padding: 14px 16px 18px;
+    }
+    .manga-rank {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+    .manga-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .manga-author {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .manga-genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .genre-chip {
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      background: rgba(255,107,43,0.1);
+      border: 1px solid rgba(255,107,43,0.3);
+      color: rgba(255,255,255,0.6);
+    }
+    .manga-score {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffd700;
+      margin-top: 8px;
+    }
+
+    /* LOADING */
+    .loading {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 80px 0;
+    }
+    .loading-dots { display: flex; gap: 8px; }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--pink));
+      animation: bounce 1s ease-in-out infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.15s; }
+    .dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+    .loading-text {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      position: relative;
+      z-index: 1;
+      width: min(1200px, 100%);
+      padding: 0 24px 24px;
+    }
+    .section-tag {
+      font-size: 0.65rem;
+      letter-spacing: 5px;
+      margin-bottom: 8px;
+    }
+    .section-tag.current { color: var(--orange); }
+    .section-tag.retro   { color: #ffd700; }
+    .section-title {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+    }
+    .section-divider {
+      position: relative;
+      z-index: 1;
+      width: min(1200px, 100%);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), transparent);
+      margin: 48px 24px 40px;
+    }
+
+    /* レトロセクションはゴールド系アクセント */
+    .retro .manga-card:hover {
+      border-color: #ffd700;
+      box-shadow: 0 12px 40px rgba(255,215,0,0.12);
+    }
+    .retro .manga-rank { color: #ffd700; }
+    .retro .genre-chip {
+      background: rgba(255,215,0,0.08);
+      border-color: rgba(255,215,0,0.25);
+    }
+    .retro .manga-score { color: #ffd700; }
+
+    /* MODAL */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-bg.open { display: flex; }
+    .modal {
+      background: var(--dark2);
+      border-radius: 24px;
+      border: 1px solid rgba(255,107,43,0.3);
+      width: min(600px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 0 80px rgba(255,107,43,0.15);
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--orange); }
+    .modal-body {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .modal-cover {
+      width: 140px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+    .modal-details { flex: 1; min-width: 200px; }
+    .modal-tag {
+      font-size: 0.6rem;
+      letter-spacing: 4px;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .modal-author {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .modal-score-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+    .modal-stat {
+      text-align: center;
+    }
+    .modal-stat-val {
+      font-size: 1.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--orange), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .modal-stat-label {
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
+    }
+    .modal-synopsis {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+      margin-top: 16px;
+    }
+    .modal-genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker">
+    <span class="ticker-inner">
+      ★ 週刊少年ジャンプ &nbsp;&nbsp;&nbsp; ✦ WEEKLY SHONEN JUMP &nbsp;&nbsp;&nbsp; ★ 連載作品一覧 &nbsp;&nbsp;&nbsp; ✦ NOVA × JUMP &nbsp;&nbsp;&nbsp; ★ FRIENDSHIP · EFFORT · VICTORY &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">NOVA</a>
+    <a href="index.html" class="nav-back">← BACK TO HOME</a>
+  </nav>
+
+  <div class="hero">
+    <p class="hero-tag">★ Nova × Weekly Shonen Jump ★</p>
+    <h1 class="hero-title">JUMP LINEUP</h1>
+    <p class="hero-sub">週刊少年ジャンプ 連載作品</p>
+  </div>
+
+  <div class="filter-row" id="filterRow">
+    <button class="filter-btn active" onclick="setFilter('all', this)">ALL</button>
+    <button class="filter-btn" onclick="setFilter('Action', this)">ACTION</button>
+    <button class="filter-btn" onclick="setFilter('Adventure', this)">ADVENTURE</button>
+    <button class="filter-btn" onclick="setFilter('Comedy', this)">COMEDY</button>
+    <button class="filter-btn" onclick="setFilter('Fantasy', this)">FANTASY</button>
+    <button class="filter-btn" onclick="setFilter('Sports', this)">SPORTS</button>
+  </div>
+
+  <!-- 現在連載 -->
+  <div class="section-header">
+    <p class="section-tag current">★ Now Serializing</p>
+    <h2 class="section-title">CURRENT LINEUP</h2>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <p class="loading-text">LOADING...</p>
+  </div>
+
+  <div class="manga-grid" id="mangaGrid"></div>
+
+  <!-- レトロセクション -->
+  <div class="section-divider"></div>
+
+  <div class="section-header">
+    <p class="section-tag retro">★ 1990s — 2000s Classics</p>
+    <h2 class="section-title">RETRO LEGENDS</h2>
+  </div>
+
+  <div class="loading" id="loadingRetro" style="display:none">
+    <div class="loading-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <p class="loading-text">LOADING...</p>
+  </div>
+
+  <div class="manga-grid retro" id="retroGrid"></div>
+
+  <!-- MODAL -->
+  <div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    let allManga = [];
+    let currentFilter = 'all';
+
+    async function fetchJumpManga() {
+      const url = 'https://api.jikan.moe/v4/manga?magazines=83&status=publishing&limit=25&order_by=score&sort=desc';
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.data || [];
+    }
+
+    // 1990〜2000年代の完結ジャンプ作品
+    async function fetchRetroManga() {
+      const url = 'https://api.jikan.moe/v4/manga?magazines=83&status=complete&limit=25&order_by=score&sort=desc&start_date=1990-01-01&end_date=2009-12-31';
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.data || [];
+    }
+
+    function setFilter(genre, btn) {
+      currentFilter = genre;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('mangaGrid');
+      const filtered = currentFilter === 'all'
+        ? allManga
+        : allManga.filter(m => m.genres?.some(g => g.name === currentFilter) ||
+                               m.themes?.some(t => t.name === currentFilter));
+      grid.innerHTML = '';
+      filtered.forEach((manga, i) => {
+        const card = makeCard(manga, i + 1);
+        card.style.animationDelay = `${i * 0.05}s`;
+        grid.appendChild(card);
+      });
+    }
+
+    function makeCard(manga, rank) {
+      const card = document.createElement('div');
+      card.className = 'manga-card';
+      card.onclick = () => openModal(manga);
+
+      const img = manga.images?.jpg?.large_image_url || manga.images?.jpg?.image_url;
+      const author = manga.authors?.map(a => a.name).join(', ') || '—';
+      const genres = [...(manga.genres || []), ...(manga.themes || [])].slice(0, 2);
+      const score = manga.score ? `⭐ ${manga.score}` : '';
+
+      card.innerHTML = `
+        ${img
+          ? `<img class="manga-cover" src="${img}" alt="${manga.title}" loading="lazy">`
+          : `<div class="manga-cover-placeholder">📖<span>NO IMAGE</span></div>`}
+        <div class="manga-info">
+          <p class="manga-rank"># ${String(rank).padStart(2,'0')}</p>
+          <p class="manga-title">${manga.title}</p>
+          <p class="manga-author">${author}</p>
+          <div class="manga-genres">
+            ${genres.map(g => `<span class="genre-chip">${g.name}</span>`).join('')}
+          </div>
+          ${score ? `<p class="manga-score">${score}</p>` : ''}
+        </div>`;
+      return card;
+    }
+
+    function openModal(manga) {
+      const img = manga.images?.jpg?.large_image_url || manga.images?.jpg?.image_url;
+      const author = manga.authors?.map(a => a.name).join(', ') || '—';
+      const genres = [...(manga.genres || []), ...(manga.themes || [])];
+      const synopsis = manga.synopsis
+        ? manga.synopsis.replace(/\[Written by MAL Rewrite\]/g, '').trim()
+        : '情報なし';
+
+      document.getElementById('modalBody').innerHTML = `
+        ${img ? `<img class="modal-cover" src="${img}" alt="${manga.title}">` : ''}
+        <div class="modal-details">
+          <p class="modal-tag">★ Weekly Shonen Jump ★</p>
+          <h2 class="modal-title">${manga.title}</h2>
+          <p class="modal-author">${author}</p>
+          <div class="modal-score-row">
+            ${manga.score ? `<div class="modal-stat"><div class="modal-stat-val">⭐ ${manga.score}</div><div class="modal-stat-label">SCORE</div></div>` : ''}
+            ${manga.chapters ? `<div class="modal-stat"><div class="modal-stat-val">${manga.chapters}</div><div class="modal-stat-label">CHAPTERS</div></div>` : ''}
+            ${manga.members ? `<div class="modal-stat"><div class="modal-stat-val">${(manga.members/10000).toFixed(1)}万</div><div class="modal-stat-label">MEMBERS</div></div>` : ''}
+          </div>
+          <div class="modal-genres">
+            ${genres.map(g => `<span class="genre-chip">${g.name}</span>`).join('')}
+          </div>
+          <p class="modal-synopsis">${synopsis.length > 300 ? synopsis.slice(0,300) + '…' : synopsis}</p>
+        </div>`;
+
+      document.getElementById('modalBg').classList.add('open');
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('modalBg')) closeModalBtn();
+    }
+    function closeModalBtn() {
+      document.getElementById('modalBg').classList.remove('open');
+    }
+
+    function dedupe(list) {
+      const seen = new Set();
+      return list.filter(m => {
+        if (seen.has(m.mal_id)) return false;
+        seen.add(m.mal_id);
+        return true;
+      });
+    }
+
+    function renderRetroGrid(list) {
+      const grid = document.getElementById('retroGrid');
+      grid.innerHTML = '';
+      list.forEach((manga, i) => {
+        const card = makeCard(manga, i + 1);
+        card.style.animationDelay = `${i * 0.05}s`;
+        grid.appendChild(card);
+      });
+    }
+
+    // 起動
+    (async () => {
+      // 現在連載
+      try {
+        const raw = await fetchJumpManga();
+        allManga = dedupe(raw);
+        document.getElementById('loading').style.display = 'none';
+        renderGrid();
+      } catch (e) {
+        console.error(e);
+        document.getElementById('loading').innerHTML =
+          '<p style="color:rgba(255,255,255,0.3);letter-spacing:2px;font-size:0.8rem;">データの取得に失敗しました</p>';
+      }
+
+      // レトロ (少し待ってからリクエスト — Jikan APIのレート制限対策)
+      await new Promise(r => setTimeout(r, 1000));
+      document.getElementById('loadingRetro').style.display = 'flex';
+      try {
+        const rawRetro = await fetchRetroManga();
+        const retroManga = dedupe(rawRetro);
+        document.getElementById('loadingRetro').style.display = 'none';
+        renderRetroGrid(retroManga);
+      } catch (e) {
+        console.error(e);
+        document.getElementById('loadingRetro').innerHTML =
+          '<p style="color:rgba(255,255,255,0.3);letter-spacing:2px;font-size:0.8rem;">データの取得に失敗しました</p>';
+      }
+    })();
+  </script>
+
+</body>
+</html>
