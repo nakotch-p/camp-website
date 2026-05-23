@@ -24,6 +24,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-x: hidden;
     }
 
     body::before {
@@ -73,7 +74,6 @@
       justify-content: space-between;
       align-items: center;
     }
-
     .nav-logo {
       font-size: 1.6rem;
       font-weight: 900;
@@ -83,7 +83,6 @@
       -webkit-text-fill-color: transparent;
       text-decoration: none;
     }
-
     .nav-back {
       font-size: 0.75rem;
       letter-spacing: 2px;
@@ -109,21 +108,18 @@
         inset 0 1px 0 rgba(255,255,255,0.05);
       text-align: center;
     }
-
     .page-subtitle {
       font-size: 0.65rem;
       letter-spacing: 5px;
       color: var(--pink);
       margin-bottom: 10px;
     }
-
     h1 {
       font-size: clamp(1.5rem, 5vw, 2.2rem);
       font-weight: 900;
       letter-spacing: 4px;
       margin-bottom: 8px;
     }
-
     .page-desc {
       font-size: 0.75rem;
       color: rgba(255,255,255,0.35);
@@ -131,7 +127,7 @@
       margin-bottom: 40px;
     }
 
-    /* POKEMON DISPLAY */
+    /* ========== POKEMON STAGE ========== */
     .pokemon-stage {
       position: relative;
       width: 220px;
@@ -139,43 +135,192 @@
       margin: 0 auto 32px;
     }
 
+    /* グロー */
     .pokemon-glow {
       position: absolute;
       inset: 10px;
       border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(155,89,255,0.25) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(155,89,255,0.3) 0%, transparent 70%);
       animation: pulse 2.5s ease-in-out infinite;
+      opacity: 0;
+      transition: opacity 0.5s;
     }
+    .pokemon-glow.visible { opacity: 1; }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.6; }
-      50%       { transform: scale(1.15); opacity: 1; }
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.2); }
     }
 
+    /* ========== 周回キラキラ ========== */
+    .orbit-ring {
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .orbit-ring.visible { opacity: 1; }
+
+    .orbit-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .orbit-dot::before {
+      content: attr(data-shape);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      animation: orbitSpin var(--duration) linear 1 forwards;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes orbitSpin {
+      0%   { transform: translate(-50%, -50%) rotate(0deg) translateX(var(--radius)) rotate(0deg); opacity: 0.9; }
+      80%  { opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) rotate(360deg) translateX(var(--radius)) rotate(-360deg); opacity: 0; }
+    }
+
+    /* ========== POKEBALL ========== */
+    .pokeball-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .pokeball {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      transform-origin: center;
+    }
+
+    /* shake → split anim */
+    .pokeball.shaking {
+      animation: pbShake 0.5s ease-in-out 3;
+    }
+    .pokeball.opening .pb-top {
+      animation: pbOpenTop 0.5s ease-in forwards;
+    }
+    .pokeball.opening .pb-bottom {
+      animation: pbOpenBottom 0.5s ease-in forwards;
+    }
+    .pokeball.hidden { display: none; }
+
+    @keyframes pbShake {
+      0%, 100% { transform: rotate(0deg); }
+      25%       { transform: rotate(-12deg); }
+      75%       { transform: rotate(12deg); }
+    }
+    @keyframes pbOpenTop {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-60px) rotate(-20deg); opacity: 0; }
+    }
+    @keyframes pbOpenBottom {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(30px) rotate(10deg); opacity: 0; }
+    }
+
+    /* ボール SVG 上半分・下半分のラッパー */
+    .pb-top, .pb-bottom {
+      position: absolute;
+      left: 0;
+      width: 100px;
+      overflow: hidden;
+    }
+    .pb-top    { top: 0;   height: 50px; }
+    .pb-bottom { top: 50px; height: 50px; }
+
+    /* SVG 全体は pb-top/pb-bottom 内で position:absolute */
+    .pb-svg {
+      position: absolute;
+      left: 0;
+      width: 100px;
+      height: 100px;
+    }
+    .pb-top .pb-svg    { top: 0; }
+    .pb-bottom .pb-svg { top: -50px; }
+
+    /* ========== 白フラッシュ ========== */
+    .flash {
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.9) 0%, transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 6;
+    }
+    .flash.go {
+      animation: flashAnim 0.5s ease-out forwards;
+    }
+    @keyframes flashAnim {
+      0%   { opacity: 1; transform: scale(0.5); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+
+    /* ========== ポケモン画像 ========== */
     #pokemonImage {
       position: relative;
-      z-index: 1;
+      z-index: 4;
       width: 180px;
       height: 180px;
       object-fit: contain;
       image-rendering: pixelated;
-      filter: drop-shadow(0 0 20px rgba(155,89,255,0.5));
-      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 24px rgba(155,89,255,0.6));
+      opacity: 0;
+      transform: scale(0.3);
+      transition: none;
       margin-top: 20px;
     }
-
-    @keyframes float {
+    #pokemonImage.appear {
+      animation: pokeAppear 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    #pokemonImage.floating {
+      opacity: 1;
+      animation: pokeFloat 3s ease-in-out infinite;
+    }
+    @keyframes pokeAppear {
+      0%   { opacity: 0; transform: scale(0.1); filter: drop-shadow(0 0 40px white) brightness(3); }
+      60%  { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 0 24px rgba(155,89,255,0.8)) brightness(1.3); }
+      100% { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 24px rgba(155,89,255,0.6)) brightness(1); }
+    }
+    @keyframes pokeFloat {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-10px); }
     }
 
+    /* ========== キラキラパーティクル ========== */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: sparkleFly linear forwards;
+    }
+    @keyframes sparkleFly {
+      0%   { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--tr)); }
+    }
+
+    /* ========== INFO ========== */
     .pokemon-number {
       font-size: 0.65rem;
       letter-spacing: 4px;
       color: var(--purple);
       margin-bottom: 8px;
+      opacity: 0;
+      transition: opacity 0.5s 0.2s;
     }
-
     #pokemonName {
       font-size: clamp(1.6rem, 6vw, 2.4rem);
       font-weight: 900;
@@ -186,16 +331,28 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 16px;
       min-height: 1.2em;
+      opacity: 0;
+      transition: opacity 0.5s 0.3s;
     }
-
-    /* TYPES */
     .types {
       display: flex;
       justify-content: center;
       gap: 10px;
       margin-bottom: 32px;
       flex-wrap: wrap;
+      opacity: 0;
+      transition: opacity 0.5s 0.4s;
     }
+    .stats {
+      margin-bottom: 36px;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.5s 0.5s;
+    }
+    .info-visible .pokemon-number,
+    .info-visible #pokemonName,
+    .info-visible .types,
+    .info-visible .stats { opacity: 1; }
 
     .type-badge {
       padding: 6px 18px;
@@ -205,8 +362,6 @@
       letter-spacing: 2px;
       text-transform: uppercase;
     }
-
-    /* ポケモンタイプ別カラー */
     .type-fire     { background: rgba(255,100,50,0.2);  border: 1px solid rgba(255,100,50,0.5);  color: #ff8c5a; }
     .type-water    { background: rgba(50,150,255,0.2);  border: 1px solid rgba(50,150,255,0.5);  color: #5ab4ff; }
     .type-grass    { background: rgba(80,200,80,0.2);   border: 1px solid rgba(80,200,80,0.5);   color: #6dda6d; }
@@ -226,12 +381,6 @@
     .type-ghost    { background: rgba(90,70,140,0.3);   border: 1px solid rgba(130,100,200,0.5); color: #a080e0; }
     .type-steel    { background: rgba(160,170,180,0.2); border: 1px solid rgba(160,170,180,0.5); color: #b8c4cc; }
 
-    /* STATS */
-    .stats {
-      margin-bottom: 36px;
-      text-align: left;
-    }
-
     .stats-title {
       font-size: 0.6rem;
       letter-spacing: 4px;
@@ -240,14 +389,12 @@
       margin-bottom: 14px;
       text-align: center;
     }
-
     .stat-row {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 10px;
     }
-
     .stat-label {
       font-size: 0.62rem;
       letter-spacing: 1px;
@@ -256,7 +403,6 @@
       width: 50px;
       flex-shrink: 0;
     }
-
     .stat-bar-bg {
       flex: 1;
       height: 6px;
@@ -264,7 +410,6 @@
       border-radius: 10px;
       overflow: hidden;
     }
-
     .stat-bar {
       height: 100%;
       border-radius: 10px;
@@ -272,7 +417,6 @@
       transition: width 0.8s ease;
       width: 0;
     }
-
     .stat-num {
       font-size: 0.75rem;
       font-weight: 700;
@@ -297,17 +441,8 @@
       text-transform: uppercase;
       transition: opacity 0.3s, transform 0.2s;
     }
-
-    .next-btn:hover {
-      opacity: 0.85;
-      transform: translateY(-2px);
-    }
-
-    .next-btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .next-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+    .next-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
     /* LOADING */
     .loading {
@@ -317,27 +452,19 @@
       gap: 12px;
       padding: 40px 0;
     }
-
-    .loading-dots {
-      display: flex;
-      gap: 8px;
-    }
-
+    .loading-dots { display: flex; gap: 8px; }
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--pink), var(--purple));
       animation: bounce 1s ease-in-out infinite;
     }
     .dot:nth-child(2) { animation-delay: 0.15s; }
     .dot:nth-child(3) { animation-delay: 0.3s; }
-
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-12px); }
     }
-
     .loading-text {
       font-size: 0.7rem;
       letter-spacing: 3px;
@@ -363,30 +490,38 @@
     <h1>TODAY'S POKEMON</h1>
     <p class="page-desc">毎回ランダムなポケモンが登場！</p>
 
-    <!-- ローディング -->
     <div class="loading" id="loading">
       <div class="loading-dots">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
       </div>
       <p class="loading-text">LOADING...</p>
     </div>
 
-    <!-- ポケモン表示 -->
     <div id="pokemonDisplay" style="display:none">
-      <div class="pokemon-stage">
-        <div class="pokemon-glow"></div>
+      <div class="pokemon-stage" id="stage">
+        <div class="pokemon-glow" id="glow"></div>
+        <div class="flash" id="flash"></div>
+        <div class="orbit-ring" id="orbitRing"></div>
+
+        <!-- モンスターボール (JSで動的生成) -->
+        <div class="pokeball-wrap" id="pokeballWrap">
+          <div class="pokeball" id="pokeball">
+            <div class="pb-top"><svg class="pb-svg" id="ballSvgTop" viewBox="0 0 100 100"></svg></div>
+            <div class="pb-bottom"><svg class="pb-svg" id="ballSvgBottom" viewBox="0 0 100 100"></svg></div>
+          </div>
+        </div>
+
         <img id="pokemonImage" src="" alt="pokemon">
       </div>
 
-      <p class="pokemon-number" id="pokemonNumber">#000</p>
-      <h2 id="pokemonName"></h2>
-      <div class="types" id="pokemonTypes"></div>
-
-      <div class="stats">
-        <p class="stats-title">Base Stats</p>
-        <div id="statsContainer"></div>
+      <div id="pokemonInfo">
+        <p class="pokemon-number" id="pokemonNumber">#000</p>
+        <h2 id="pokemonName"></h2>
+        <div class="types" id="pokemonTypes"></div>
+        <div class="stats">
+          <p class="stats-title">Base Stats</p>
+          <div id="statsContainer"></div>
+        </div>
       </div>
     </div>
 
@@ -394,7 +529,147 @@
   </div>
 
   <script>
-    const statLabels = { hp: 'HP', attack: 'ATK', defense: 'DEF', 'special-attack': 'SpATK', 'special-defense': 'SpDEF', speed: 'SPD' };
+    const statLabels = { hp:'HP', attack:'ATK', defense:'DEF', 'special-attack':'SpATK', 'special-defense':'SpDEF', speed:'SPD' };
+
+    /* ボール種類定義: [名前, 上色, 下色, ストライプ色, ボタン色] */
+    const ballTypes = [
+      { name: 'モンスターボール',   top: '#e53935', bottom: '#fafafa', stripe: '#212121', btn: '#bdbdbd' },
+      { name: 'スーパーボール',     top: '#1565c0', bottom: '#fafafa', stripe: '#212121', btn: '#bdbdbd' },
+      { name: 'ハイパーボール',     top: '#212121', bottom: '#ffd600', stripe: '#ffd600', btn: '#fff'    },
+      { name: 'マスターボール',     top: '#6a1b9a', bottom: '#ce93d8', stripe: '#212121', btn: '#fff'    },
+      { name: 'プレミアボール',     top: '#fff',    bottom: '#fff',    stripe: '#e53935', btn: '#bdbdbd' },
+      { name: 'ネットボール',       top: '#00897b', bottom: '#b2dfdb', stripe: '#212121', btn: '#bdbdbd' },
+      { name: 'ダークボール',       top: '#1a237e', bottom: '#283593', stripe: '#7986cb', btn: '#9fa8da' },
+      { name: 'タイマーボール',     top: '#fff',    bottom: '#fff',    stripe: '#ef6c00', btn: '#bdbdbd' },
+    ];
+
+    function buildBallSVG(type) {
+      const svgNS = 'http://www.w3.org/2000/svg';
+
+      function makeSVG(isTop) {
+        const svg = document.getElementById(isTop ? 'ballSvgTop' : 'ballSvgBottom');
+        svg.innerHTML = '';
+
+        // 半円
+        const half = document.createElementNS(svgNS, 'path');
+        half.setAttribute('d', isTop
+          ? 'M5,50 A45,45 0 0,1 95,50 Z'
+          : 'M5,50 A45,45 0 0,0 95,50 Z');
+        half.setAttribute('fill', isTop ? type.top : type.bottom);
+        svg.appendChild(half);
+
+        // ストライプ
+        const stripe = document.createElementNS(svgNS, 'rect');
+        stripe.setAttribute('x', '5');
+        stripe.setAttribute('y', isTop ? '46' : '50');
+        stripe.setAttribute('width', '90');
+        stripe.setAttribute('height', '4');
+        stripe.setAttribute('fill', type.stripe);
+        svg.appendChild(stripe);
+
+        // ボタン外枠
+        const btnOuter = document.createElementNS(svgNS, 'circle');
+        btnOuter.setAttribute('cx', '50'); btnOuter.setAttribute('cy', '50');
+        btnOuter.setAttribute('r', '12'); btnOuter.setAttribute('fill', type.stripe);
+        svg.appendChild(btnOuter);
+
+        // ボタン内
+        const btnInner = document.createElementNS(svgNS, 'circle');
+        btnInner.setAttribute('cx', '50'); btnInner.setAttribute('cy', '50');
+        btnInner.setAttribute('r', '8'); btnInner.setAttribute('fill', '#fff');
+        svg.appendChild(btnInner);
+
+        // ボタン中心
+        const btnCore = document.createElementNS(svgNS, 'circle');
+        btnCore.setAttribute('cx', '50'); btnCore.setAttribute('cy', '50');
+        btnCore.setAttribute('r', '4'); btnCore.setAttribute('fill', type.btn);
+        svg.appendChild(btnCore);
+      }
+
+      makeSVG(true);
+      makeSVG(false);
+    }
+
+
+    /* 周回キラキラ生成 */
+    function buildOrbitRing() {
+      const ring = document.getElementById('orbitRing');
+      ring.innerHTML = '';
+      const shapes = ['✦','★','✸','◆','✿','💫','⭐','✷'];
+      const colors = ['#ff4d8d','#9b59ff','#ffb3d1','#c084fc','#ffd700','#fff','#7dd3fc','#ff6b9d'];
+      const count = 8;
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'orbit-dot';
+        dot.setAttribute('data-shape', shapes[i % shapes.length]);
+        const duration = 1.2 + (i % 3) * 0.15;
+        dot.style.cssText = `
+          --radius: 110px;
+          --duration: ${duration}s;
+          --delay: ${(i / count) * -duration}s;
+          color: ${colors[i % colors.length]};
+        `;
+        ring.appendChild(dot);
+      }
+    }
+
+    /* ポケボール → ポケモン 登場シーケンス */
+    function runSummonAnimation(imgSrc, onReady) {
+      const ball   = document.getElementById('pokeball');
+      const wrap   = document.getElementById('pokeballWrap');
+      const flash  = document.getElementById('flash');
+      const img    = document.getElementById('pokemonImage');
+      const glow   = document.getElementById('glow');
+      const stage  = document.getElementById('stage');
+      const orbit  = document.getElementById('orbitRing');
+
+      // ランダムボール選択
+      const randomBall = ballTypes[Math.floor(Math.random() * ballTypes.length)];
+      buildBallSVG(randomBall);
+
+      // リセット
+      ball.className = 'pokeball';
+      wrap.style.display = 'flex';
+      img.className = '';
+      img.style.opacity = '0';
+      img.src = imgSrc;
+      glow.classList.remove('visible');
+      orbit.classList.remove('visible');
+      document.getElementById('pokemonInfo').classList.remove('info-visible');
+
+      // ① シェイク
+      setTimeout(() => { ball.classList.add('shaking'); }, 100);
+
+      // ② 開く
+      setTimeout(() => {
+        ball.classList.remove('shaking');
+        ball.classList.add('opening');
+      }, 1700);
+
+      // ③ フラッシュ
+      setTimeout(() => {
+        flash.classList.add('go');
+        wrap.style.display = 'none';
+
+      }, 2100);
+
+      // ④ ポケモン出現
+      setTimeout(() => {
+        flash.classList.remove('go');
+        img.className = 'appear';
+        glow.classList.add('visible');
+
+        img.addEventListener('animationend', () => {
+          img.style.opacity = '1';
+          img.style.transform = 'translateY(0)';
+          img.className = 'floating';
+          document.getElementById('pokemonInfo').classList.add('info-visible');
+          buildOrbitRing();
+          orbit.classList.add('visible');
+          onReady();
+        }, { once: true });
+      }, 2400);
+    }
 
     async function loadPokemon() {
       const btn = document.getElementById('nextBtn');
@@ -411,11 +686,8 @@
         console.log(data);
 
         // 番号・名前
-        document.getElementById('pokemonNumber').textContent = `#${String(data.id).padStart(3, '0')}`;
+        document.getElementById('pokemonNumber').textContent = `#${String(data.id).padStart(3,'0')}`;
         document.getElementById('pokemonName').textContent = data.name;
-
-        // 画像
-        document.getElementById('pokemonImage').src = data.sprites.front_default;
 
         // タイプ
         const typesEl = document.getElementById('pokemonTypes');
@@ -444,12 +716,24 @@
         document.getElementById('loading').style.display = 'none';
         document.getElementById('pokemonDisplay').style.display = 'block';
 
+        // 鳴き声URL取得 (latest優先、なければlegacy)
+        const crySrc = data.cries?.latest || data.cries?.legacy || null;
+
+        // モンスターボール演出
+        runSummonAnimation(data.sprites.front_default, () => {
+          if (crySrc) {
+            const audio = new Audio(crySrc);
+            audio.volume = 0.6;
+            audio.play().catch(() => {});
+          }
+          btn.disabled = false;
+        });
+
       } catch (error) {
         console.error(`エラーが発生しました:${error}`);
         document.getElementById('loading').style.display = 'none';
+        btn.disabled = false;
       }
-
-      btn.disabled = false;
     }
 
     loadPokemon();
