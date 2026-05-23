@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>=DOG — Our Vision</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink: #ff4d8d;
+      --purple: #9b59ff;
+      --dark: #0a0a0f;
+      --dark2: #12121a;
+      --dark3: #1a1a26;
+      --light: #f0e6ff;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(2px 2px at 60% 40%, rgba(155,89,255,0.2) 0%, transparent 100%),
+        radial-gradient(2px 2px at 25% 65%, rgba(255,77,141,0.15) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* TICKER */
+    .ticker {
+      width: 100%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      z-index: 10;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 22s linear infinite;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      font-weight: 700;
+    }
+    @keyframes ticker {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
+    }
+
+    /* NAV */
+    nav {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--pink); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 24px 80px;
+      width: 100%;
+      background: radial-gradient(ellipse at 50% 60%, rgba(155,89,255,0.12) 0%, transparent 65%);
+    }
+    .hero-tag {
+      font-size: 0.65rem;
+      letter-spacing: 6px;
+      color: var(--pink);
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-size: clamp(4rem, 14vw, 9rem);
+      font-weight: 900;
+      letter-spacing: 12px;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 20%, var(--light) 60%, var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0;
+    }
+
+    /* CONTENT */
+    .content {
+      position: relative;
+      z-index: 1;
+      width: min(860px, 100%);
+      padding: 0 32px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* THE EQUATION */
+    .equation-block {
+      background: var(--dark2);
+      border-radius: 28px;
+      border: 1px solid rgba(155,89,255,0.2);
+      padding: 56px 48px;
+      text-align: center;
+      box-shadow: 0 0 80px rgba(155,89,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .eq-label {
+      font-size: 0.6rem;
+      letter-spacing: 6px;
+      color: var(--purple);
+      margin-bottom: 24px;
+    }
+    .eq-formula {
+      font-size: clamp(1.4rem, 5vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: 6px;
+      margin-bottom: 32px;
+    }
+    .eq-equals { color: rgba(255,255,255,0.3); margin: 0 16px; }
+    .eq-dog {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .eq-desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 2;
+      letter-spacing: 1px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .eq-desc strong {
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* VISION CARDS */
+    .vision-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .vision-card {
+      background: var(--dark2);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 36px 28px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .vision-card:hover {
+      border-color: var(--pink);
+      transform: translateY(-6px);
+    }
+    .vision-icon {
+      font-size: 2.4rem;
+      margin-bottom: 18px;
+      display: block;
+    }
+    .vision-tag {
+      font-size: 0.55rem;
+      letter-spacing: 4px;
+      color: var(--pink);
+      margin-bottom: 10px;
+    }
+    .vision-title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+    .vision-text {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.9;
+      letter-spacing: 0.5px;
+    }
+
+    /* MANIFESTO */
+    .manifesto {
+      background: var(--dark2);
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .manifesto::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(255,77,141,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .manifesto-label {
+      font-size: 0.6rem;
+      letter-spacing: 6px;
+      color: var(--pink);
+      margin-bottom: 20px;
+    }
+    .manifesto-title {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      margin-bottom: 32px;
+      background: linear-gradient(135deg, #fff, var(--light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .manifesto-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .manifesto-line {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .manifesto-line:last-child { border-bottom: none; padding-bottom: 0; }
+    .manifesto-num {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: var(--purple);
+      padding-top: 4px;
+      min-width: 32px;
+    }
+    .manifesto-text {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.9;
+      letter-spacing: 0.5px;
+    }
+    .manifesto-text strong { color: #fff; }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(155,89,255,0.3), transparent);
+    }
+
+    /* BACK BTN */
+    .back-btn {
+      display: block;
+      padding: 16px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .back-btn:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker">
+    <span class="ticker-inner">
+      ★ =DOG とは何か &nbsp;&nbsp;&nbsp; ✦ THE MEANING BEHIND THE NAME &nbsp;&nbsp;&nbsp; ★ わんわん × ビジョン &nbsp;&nbsp;&nbsp; ✦ GOOD BOY ALWAYS &nbsp;&nbsp;&nbsp; ★ =DOG OFFICIAL &nbsp;&nbsp;&nbsp; ✦ 忠実・純粋・全力 &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">=DOG</a>
+    <a href="index.html" class="nav-back">← BACK TO HOME</a>
+  </nav>
+
+  <div class="hero">
+    <p class="hero-tag">★ Our Identity ★</p>
+    <h1 class="hero-title">=DOG</h1>
+    <p class="hero-sub">THE MEANING BEHIND THE NAME</p>
+  </div>
+
+  <div class="content">
+
+    <!-- THE EQUATION -->
+    <div class="equation-block">
+      <p class="eq-label">★ THE EQUATION ★</p>
+      <div class="eq-formula">
+        <span>何か</span>
+        <span class="eq-equals">=</span>
+        <span class="eq-dog">DOG</span>
+      </div>
+      <p class="eq-desc">
+        「=DOG」の <strong>「=」</strong> は、<strong>すべてのものは犬に等しい</strong> という哲学を表しています。<br>
+        喜びも、悲しみも、音楽も、出会いも——<br>
+        突き詰めれば全部、犬のような<strong>純粋さ・忠実さ・全力さ</strong>に行き着く。<br>
+        それが私たちの出した答えです。
+      </p>
+    </div>
+
+<!-- MANIFESTO -->
+    <div class="manifesto">
+      <p class="manifesto-label">★ MANIFESTO ★</p>
+      <h2 class="manifesto-title">THE =DOG WAY</h2>
+      <div class="manifesto-lines">
+        <div class="manifesto-line">
+          <span class="manifesto-num">01</span>
+          <p class="manifesto-text"><strong>しっぽを振れ。</strong> 嬉しいなら全力で表現しろ。恥ずかしがるな。感情は隠すものじゃない。</p>
+        </div>
+        <div class="manifesto-line">
+          <span class="manifesto-num">02</span>
+          <p class="manifesto-text"><strong>骨は埋めておけ。</strong> 大事なものは守れ。夢も、仲間も、今この瞬間も。</p>
+        </div>
+        <div class="manifesto-line">
+          <span class="manifesto-num">03</span>
+          <p class="manifesto-text"><strong>知らない道でも走れ。</strong> 散歩コースは毎回違っていい。新しい匂いの先に、新しい自分がいる。</p>
+        </div>
+        <div class="manifesto-line">
+          <span class="manifesto-num">04</span>
+          <p class="manifesto-text"><strong>吠えるべき時は吠えろ。</strong> 静かにしているだけが正解じゃない。伝えたいことは、全力で伝えろ。</p>
+        </div>
+        <div class="manifesto-line">
+          <span class="manifesto-num">05</span>
+          <p class="manifesto-text"><strong>最後は丸くなって眠れ。</strong> 全力を尽くした日の終わりは、ちゃんと休め。明日また走るために。</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-btn">← BACK TO HOME</a>
+
+  </div>
+
+</body>
+</html>

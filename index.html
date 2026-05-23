@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <title>NOVA — Official Website</title>
+  <title>=DOG — Official Website</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -220,7 +220,7 @@
       position: relative;
       overflow: hidden;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
     }
 
@@ -229,6 +229,20 @@
     .member-card:nth-child(3) .member-img { background: linear-gradient(160deg, #200030, #600040); }
     .member-card:nth-child(4) .member-img { background: linear-gradient(160deg, #001a20, #003040); }
     .member-card:nth-child(5) .member-img { background: linear-gradient(160deg, #200010, #500020); }
+
+    .dog-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .member-prefix {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--pink);
+      margin-bottom: 4px;
+    }
 
     .member-info {
       padding: 16px 20px 20px;
@@ -433,15 +447,17 @@
       from { transform: translateX(100vw); }
       to { transform: translateX(-100%); }
     }
+
+
   </style>
 </head>
 <body>
 
   <!-- NAV -->
   <nav>
-    <div class="nav-logo">NOVA</div>
+    <div class="nav-logo">=DOG</div>
     <ul class="nav-links">
-      <li><a href="#">About</a></li>
+      <li><a href="https://nakotch-p.github.io/camp-website/=dog.html">About</a></li>
       <li><a href="#">Members</a></li>
       <li><a href="#">Music</a></li>
       <li><a href="#">News</a></li>
@@ -454,12 +470,13 @@
 
   <!-- HERO -->
   <section class="hero">
+
     <div class="hero-content">
       <p class="hero-tag">★ 2nd Mini Album Out Now ★</p>
-      <h1 class="hero-title">NOVA</h1>
-      <p class="hero-sub">5-MEMBER K-POP GROUP · DEBUT 2024</p>
+      <h1 class="hero-title">=DOG</h1>
+      <p class="hero-sub">5 DOGS · わんわん · GOOD BOY SINCE 2024</p>
       <div class="hero-buttons">
-        <a href="#" class="btn-primary">Listen Now</a>
+        <a href="https://nakotch-p.github.io/camp-website/=dog.html" class="btn-primary">About =DOG</a>
         <a href="https://nakotch-p.github.io/camp-website/guessgame.html" class="btn-outline">★ Game</a>
         <a href="https://nakotch-p.github.io/camp-website/pokemon.html" class="btn-outline">★ Pokemon</a>
         <a href="https://nakotch-p.github.io/camp-website/jump.html" class="btn-outline">★ Jump</a>
@@ -471,7 +488,7 @@
   <!-- TICKER -->
   <div class="ticker">
     <span class="ticker-inner">
-      ★ NEW SINGLE "SUPERNOVA" OUT NOW &nbsp;&nbsp;&nbsp; ★ WORLD TOUR 2025 ANNOUNCED &nbsp;&nbsp;&nbsp; ★ 2ND MINI ALBUM "ECLIPSE" &nbsp;&nbsp;&nbsp; ★ FOLLOW US @NOVA_OFFICIAL &nbsp;&nbsp;&nbsp; ★ NEW SINGLE "SUPERNOVA" OUT NOW &nbsp;&nbsp;&nbsp;
+      ★ NEW SINGLE "SUPER=DOG" OUT NOW &nbsp;&nbsp;&nbsp; ★ WORLD TOUR 2025 ANNOUNCED &nbsp;&nbsp;&nbsp; ★ 2ND MINI ALBUM "ECLIPSE" &nbsp;&nbsp;&nbsp; ★ FOLLOW US @=DOG_OFFICIAL &nbsp;&nbsp;&nbsp; ★ NEW SINGLE "SUPER=DOG" OUT NOW &nbsp;&nbsp;&nbsp;
     </span>
   </div>
 
@@ -482,41 +499,56 @@
     <div class="members-grid">
 
       <div class="member-card">
-        <div class="member-img"></div>
+        <div class="member-img">
+          <img class="dog-photo" id="dog0" alt="dog">
+        </div>
         <div class="member-info">
-          <p class="member-name">JIYEON</p>
+          <p class="member-prefix">強欲の</p>
+          <p class="member-name">POCHI</p>
           <p class="member-role">Leader · Vocalist</p>
         </div>
       </div>
 
       <div class="member-card">
-        <div class="member-img"></div>
+        <div class="member-img">
+          <img class="dog-photo" id="dog1" alt="dog">
+        </div>
         <div class="member-info">
-          <p class="member-name">MINHO</p>
+          <p class="member-prefix">孤高の</p>
+          <p class="member-name">SHIRO</p>
           <p class="member-role">Main Dancer</p>
         </div>
       </div>
 
       <div class="member-card">
-        <div class="member-img"></div>
+        <div class="member-img">
+          <img class="dog-photo" id="dog2" alt="dog">
+        </div>
         <div class="member-info">
-          <p class="member-name">SORA</p>
+          <p class="member-prefix">無敵の</p>
+          <p class="member-name">KURO</p>
           <p class="member-role">Main Vocalist</p>
         </div>
       </div>
 
       <div class="member-card">
-        <div class="member-img"></div>
+        <div class="member-img">
+          <img class="dog-photo" id="dog3" alt="dog">
+        </div>
         <div class="member-info">
-          <p class="member-name">YUJIN</p>
+          <p class="member-prefix">漆黒の</p>
+          <p class="member-name">HANA</p>
           <p class="member-role">Rapper · Visual</p>
         </div>
       </div>
 
       <div class="member-card">
-        <div class="member-img"></div>
+        <div class="member-img">
+          <img class="dog-photo" id="dog4" alt="dog">
+        </div>
         <div class="member-info">
-          <p class="member-name">TAEIL</p>
+          <p class="member-prefix">閃光の</p>
+          <p class="member-name">MOMO</p>
           <p class="member-role">Maknae · Dancer</p>
         </div>
       </div>
@@ -526,30 +558,30 @@
 
   <!-- LATEST RELEASES -->
   <section class="section latest">
-    <p class="section-label">Discography</p>
-    <h2 class="section-title">LATEST RELEASES</h2>
+    <p class="section-label">お気に入り</p>
+    <h2 class="section-title">LATEST TREASURES</h2>
     <div class="latest-grid">
       <div class="release-card">
-        <div class="release-bg">🎵</div>
+        <div class="release-bg">🦴</div>
         <div class="release-info">
-          <p class="release-type">Single</p>
-          <p class="release-title">SUPERNOVA</p>
+          <p class="release-type">初めて見つけた</p>
+          <p class="release-title">BONE</p>
           <p class="release-date">2025.05.01</p>
         </div>
       </div>
       <div class="release-card">
-        <div class="release-bg">💿</div>
+        <div class="release-bg">🎾</div>
         <div class="release-info">
-          <p class="release-type">Mini Album</p>
-          <p class="release-title">ECLIPSE</p>
+          <p class="release-type">お気に入りのおもちゃ</p>
+          <p class="release-title">BALL</p>
           <p class="release-date">2025.02.14</p>
         </div>
       </div>
       <div class="release-card">
-        <div class="release-bg">🎤</div>
+        <div class="release-bg">🐾</div>
         <div class="release-info">
-          <p class="release-type">Debut Single</p>
-          <p class="release-title">STARLIGHT</p>
+          <p class="release-type">デビュー記念</p>
+          <p class="release-title">FIRST WALK</p>
           <p class="release-date">2024.08.22</p>
         </div>
       </div>
@@ -563,19 +595,19 @@
     <div class="news-list">
       <div class="news-item">
         <span class="news-date">2025.05.20</span>
-        <span class="news-title">NOVA World Tour 2025 — Tokyo, Seoul, LA, London の日程が発表されました。</span>
+        <span class="news-title">POCHI、はじめてのお散歩デビューを果たしました。終始しっぽを振り続けていたとのこと。</span>
       </div>
       <div class="news-item">
         <span class="news-date">2025.05.01</span>
-        <span class="news-title">新シングル「SUPERNOVA」が本日リリース！MV再生回数が24時間で1000万回を突破。</span>
+        <span class="news-title">SHIRO、「お座り」と「伏せ」をほぼ同時にマスター。天才との呼び声が高まっています。</span>
       </div>
       <div class="news-item">
         <span class="news-date">2025.04.10</span>
-        <span class="news-title">MINHO、映画主題歌を担当することが決定。詳細は近日公開予定。</span>
+        <span class="news-title">KURO、はじめてボールを持ってきた瞬間が激写される。ファン歓喜。</span>
       </div>
       <div class="news-item">
         <span class="news-date">2025.03.15</span>
-        <span class="news-title">ファンクラブ「NOVA STAR」の会員数が100万人を突破しました。</span>
+        <span class="news-title">HANA と MOMO、はじめて2匹で昼寝している姿が目撃される。公式「尊すぎて無理」とコメント。</span>
       </div>
     </div>
   </section>
@@ -595,9 +627,97 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">NOVA</div>
-    <p class="footer-copy">© 2025 NOVA ENTERTAINMENT. ALL RIGHTS RESERVED.</p>
+    <div class="footer-logo">=DOG</div>
+    <p class="footer-copy">© 2025 =DOG ENTERTAINMENT. ALL RIGHTS RESERVED.</p>
   </footer>
+
+
+  <script>
+    for (let i = 0; i < 5; i++) {
+      fetch('https://dog.ceo/api/breeds/image/random')
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('dog' + i).src = data.message;
+        });
+    }
+
+    function playWan(ctx, offset) {
+      const now = ctx.currentTime + offset;
+
+      // ノイズバッファ（ワの子音成分）
+      const bufLen = ctx.sampleRate * 0.25;
+      const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+
+      // バンドパスフィルタで犬の鳴き声帯域に絞る
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.setValueAtTime(900, now);
+      bp.frequency.exponentialRampToValueAtTime(350, now + 0.08);
+      bp.Q.value = 1.8;
+
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0, now);
+      noiseGain.gain.linearRampToValueAtTime(1.0, now + 0.008);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+
+      noise.connect(bp);
+      bp.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      noise.start(now);
+      noise.stop(now + 0.25);
+
+      // 低音オシレーター（ンの母音成分）
+      const osc = ctx.createOscillator();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(420, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.18);
+
+      // フォルマントフィルタ
+      const form = ctx.createBiquadFilter();
+      form.type = 'peaking';
+      form.frequency.value = 500;
+      form.gain.value = 10;
+      form.Q.value = 2;
+
+      const oscGain = ctx.createGain();
+      oscGain.gain.setValueAtTime(0, now);
+      oscGain.gain.linearRampToValueAtTime(0.55, now + 0.012);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+      osc.connect(form);
+      form.connect(oscGain);
+      oscGain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.25);
+    }
+
+    function bark() {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const type = Math.random();
+
+      if (type < 0.4) {
+        // ワン！（1回）
+        playWan(ctx, 0);
+      } else if (type < 0.75) {
+        // ワンワン！（2回）
+        playWan(ctx, 0);
+        playWan(ctx, 0.28);
+      } else {
+        // ワンワンワン！（3回）
+        playWan(ctx, 0);
+        playWan(ctx, 0.27);
+        playWan(ctx, 0.54);
+      }
+
+      const btn = document.getElementById('barkBtn');
+      btn.classList.add('barking');
+      setTimeout(() => btn.classList.remove('barking'), 200);
+    }
+  </script>
 
 </body>
 </html>
