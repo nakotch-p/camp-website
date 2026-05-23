@@ -129,6 +129,7 @@
       display: flex;
       gap: 16px;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -216,24 +217,18 @@
     .member-img {
       width: 100%;
       aspect-ratio: 3/4;
-      background: linear-gradient(135deg, var(--dark2), rgba(155,89,255,0.2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
     }
 
-    .member-img::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40%;
-      background: linear-gradient(to top, var(--dark2), transparent);
-    }
+    .member-card:nth-child(1) .member-img { background: linear-gradient(160deg, #1a0030, #4a0050); }
+    .member-card:nth-child(2) .member-img { background: linear-gradient(160deg, #001030, #002060); }
+    .member-card:nth-child(3) .member-img { background: linear-gradient(160deg, #200030, #600040); }
+    .member-card:nth-child(4) .member-img { background: linear-gradient(160deg, #001a20, #003040); }
+    .member-card:nth-child(5) .member-img { background: linear-gradient(160deg, #200010, #500020); }
 
     .member-info {
       padding: 16px 20px 20px;
@@ -450,9 +445,10 @@
       <li><a href="#">Members</a></li>
       <li><a href="#">Music</a></li>
       <li><a href="#">News</a></li>
-      <li><a href="https://nakotch-p.github.io/camp-website/jump.html">Jump</a></li>
       <li><a href="https://nakotch-p.github.io/camp-website/guessgame.html">Game</a></li>
       <li><a href="https://nakotch-p.github.io/camp-website/pokemon.html">Pokemon</a></li>
+      <li><a href="https://nakotch-p.github.io/camp-website/jump.html">Jump</a></li>
+      <li><a href="https://nakotch-p.github.io/camp-website/oyajigyagu.html">Dad Jokes</a></li>
     </ul>
   </nav>
 
@@ -464,9 +460,10 @@
       <p class="hero-sub">5-MEMBER K-POP GROUP · DEBUT 2024</p>
       <div class="hero-buttons">
         <a href="#" class="btn-primary">Listen Now</a>
-        <a href="https://nakotch-p.github.io/camp-website/jump.html" class="btn-outline">★ Jump</a>
         <a href="https://nakotch-p.github.io/camp-website/guessgame.html" class="btn-outline">★ Game</a>
         <a href="https://nakotch-p.github.io/camp-website/pokemon.html" class="btn-outline">★ Pokemon</a>
+        <a href="https://nakotch-p.github.io/camp-website/jump.html" class="btn-outline">★ Jump</a>
+        <a href="https://nakotch-p.github.io/camp-website/oyajigyagu.html" class="btn-outline">★ Dad Jokes</a>
       </div>
     </div>
   </section>
@@ -483,41 +480,47 @@
     <p class="section-label">Our Members</p>
     <h2 class="section-title">MEET THE GROUP</h2>
     <div class="members-grid">
+
       <div class="member-card">
-        <div class="member-img">🌟</div>
+        <div class="member-img"></div>
         <div class="member-info">
           <p class="member-name">JIYEON</p>
           <p class="member-role">Leader · Vocalist</p>
         </div>
       </div>
+
       <div class="member-card">
-        <div class="member-img">✨</div>
+        <div class="member-img"></div>
         <div class="member-info">
           <p class="member-name">MINHO</p>
           <p class="member-role">Main Dancer</p>
         </div>
       </div>
+
       <div class="member-card">
-        <div class="member-img">💫</div>
+        <div class="member-img"></div>
         <div class="member-info">
           <p class="member-name">SORA</p>
           <p class="member-role">Main Vocalist</p>
         </div>
       </div>
+
       <div class="member-card">
-        <div class="member-img">⭐</div>
+        <div class="member-img"></div>
         <div class="member-info">
           <p class="member-name">YUJIN</p>
           <p class="member-role">Rapper · Visual</p>
         </div>
       </div>
+
       <div class="member-card">
-        <div class="member-img">🔥</div>
+        <div class="member-img"></div>
         <div class="member-info">
           <p class="member-name">TAEIL</p>
           <p class="member-role">Maknae · Dancer</p>
         </div>
       </div>
+
     </div>
   </section>
 
